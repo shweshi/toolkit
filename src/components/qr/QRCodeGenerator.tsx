@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import { Code, QrCode } from "lucide-react";
 import Textarea from "../ui/Textarea";
 import Back from "../ui/Back";
+import SimpleCard from "../ui/SimpleCard";
 
 export default function QRCodeGenerator() {
     const [textInput, setTextInput] = useState("");
@@ -27,7 +28,7 @@ export default function QRCodeGenerator() {
                 <Header title="QR Code Generator" description="Generate a QR Code from any text or URL." icon={Code} />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <Card title="Input">
+                    <SimpleCard>
                         <Input
                             value={textInput}
                             onChange={(e) => setTextInput(e.target.value)}
@@ -38,8 +39,8 @@ export default function QRCodeGenerator() {
                                 <QrCode /> Generate
                             </Button>
                         </div>
-                    </Card>
-                    <Card title="QR Code">
+                    </SimpleCard>
+                    <SimpleCard>
                         {qrData ? (
                             <div className="flex justify-center items-center p-4 bg-white rounded-xl">
                                 <QRCodeCanvas
@@ -56,7 +57,7 @@ export default function QRCodeGenerator() {
                             </div>
 
                         )}
-                    </Card>
+                    </SimpleCard>
                 </div>
             </main>
         </div>

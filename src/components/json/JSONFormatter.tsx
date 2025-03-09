@@ -77,7 +77,7 @@ export default function JsonFormatter() {
           <Card title={"Formatted JSON"}>
             <div className="h-[200px] sm:h-[600px] relative">
               <div
-                className={`rounded-xl border h-[200px] sm:h-[600px] ${validationResult.isValid
+                className={`flex flex-col rounded-xl border h-[200px] sm:h-[600px] ${validationResult.isValid
                   ? "bg-card-dark text-green-400 border-green-400/20"
                   : "bg-card-dark text-red-400 border-red-400/20"
                   }`}
@@ -90,7 +90,7 @@ export default function JsonFormatter() {
                   language="json"
                   style={atomDark}
                   customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem" }}
-                  className="p-6 font-mono text-sm whitespace-pre-wrap h-[200px] sm:h-[600px]"
+                  className="flex-1 p-6 font-mono text-sm whitespace-pre-wrap h-[200px] sm:h-[600px]"
                 >
                   {String(formattedJson || "")}
                 </SyntaxHighlighter>
