@@ -21,7 +21,9 @@ export default function Home() {
     { title: "Random Number Generator", description: "Generate a random number between a specified min and max range.", href: "/random-number-generator", icon: 'Shuffle' },
     { title: "QR Code Generator", description: "Generate QR Code.", href: "/qr-code-generator", icon: 'QrCode' },
     { title: "URL Encoder", description: "URL Encoder", href: "/url-encoder", icon: 'Link2' },
-    { title: "URL Decoder", description: "URL Decoder", href: "/url-decoder", icon: 'Link' }
+    { title: "URL Decoder", description: "URL Decoder", href: "/url-decoder", icon: 'Link' },
+    { title: "JWT Decoder", description: "JWT Decoder", href: "/jwt-decoder", icon: 'Link' },
+    { title: "JWT Validator", description: "JWT Validator", href: "/jwt-validator", icon: 'Link' }
   ];
 
   return (
