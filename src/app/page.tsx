@@ -18,7 +18,10 @@ export default function Home() {
     { title: "Base 64 Decoder", description: "Decode Base64-encoded strings back into readable text.", href: "/base-64-decoder", icon: 'Code' },
     { title: "UUID Generator", description: "Generate unique UUIDs (v4) instantly for your applications.", href: "/uuid-generator", icon: 'Fingerprint' },
     { title: "UUID Validator", description: "Check if a given string is a valid UUID.", href: "/uuid-validator", icon: 'Barcode' },
-    { title: "Random Number Generator", description: "Generate a random number between a specified min and max range.", href: "/random-number-generator", icon: 'Shuffle' }
+    { title: "Random Number Generator", description: "Generate a random number between a specified min and max range.", href: "/random-number-generator", icon: 'Shuffle' },
+    { title: "QR Code Generator", description: "Generate QR Code.", href: "/qr-code-generator", icon: 'QrCode' },
+    { title: "URL Encoder", description: "URL Encoder", href: "/url-encoder", icon: 'Link2' },
+    { title: "URL Decoder", description: "URL Decoder", href: "/url-decoder", icon: 'Link' }
   ];
 
   return (
