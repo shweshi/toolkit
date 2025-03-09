@@ -90,7 +90,7 @@ export default function UUIDGenerator() {
                             value={uuid}
                             onChange={(e) => setUuid(e.target.value)}
                             placeholder={activeTab === 0 ? "Click to generate a UUID..." : "Enter UUID to validate..."}
-                            readOnly={activeTab === 0} // Read-only in generator mode
+                            isReadOnly={activeTab === 0} // Read-only in generator mode
                         />
                     </Card>
                     <Card title={tabs[activeTab]?.desc || "Output"}>

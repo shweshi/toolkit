@@ -96,7 +96,7 @@ export default function JsonValidator() {
                                     customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem" }}
                                     className="p-6 font-mono text-sm whitespace-pre-wrap h-[200px] sm:h-[600px]"
                                 >
-                                    {formattedJson}
+                                    {String(formattedJson || "")}
                                 </SyntaxHighlighter>
                             </div>
 

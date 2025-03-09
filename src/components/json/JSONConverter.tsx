@@ -60,7 +60,7 @@ export default function JsonConverter() {
 
       setConvertedOutput(result);
       setValidationResult({ isValid: true, message: "Valid JSON (RFC 8259 Compliant)" });
-    } catch (e:any) {
+    } catch (e: any) {
       setConvertedOutput(undefined);
       setValidationResult({ isValid: false, message: e.message });
     }
@@ -115,7 +115,7 @@ export default function JsonConverter() {
           </Card>
 
           <Card title={"Converted Output"}>
-          <div className="h-[200px] sm:h-[600px] relative">
+            <div className="h-[200px] sm:h-[600px] relative">
               <div
                 className={`rounded-xl border h-[200px] sm:h-[600px] ${validationResult.isValid
                   ? "bg-card-dark text-green-400 border-green-400/20"
@@ -123,7 +123,7 @@ export default function JsonConverter() {
                   }`}
               >
                 {!validationResult.isValid && (
-                <div className="flex inline-block mt-2" ><AlertTriangle className="inline-block ml-2 mr-2" />{validationResult.message}</div>
+                  <div className="flex inline-block mt-2" ><AlertTriangle className="inline-block ml-2 mr-2" />{validationResult.message}</div>
                 )}
 
                 <SyntaxHighlighter
@@ -132,8 +132,9 @@ export default function JsonConverter() {
                   customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem" }}
                   className="p-6 font-mono text-sm whitespace-pre-wrap h-[200px] sm:h-[600px]"
                 >
-                  {convertedOutput}
+                  {String(convertedOutput || "")}
                 </SyntaxHighlighter>
+
               </div>
 
             </div>

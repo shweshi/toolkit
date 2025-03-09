@@ -83,7 +83,7 @@ export default function Base64Tool() {
                         />
                     </Card>
                     <Card title={tabs[activeTab]?.desc || "Output"}>
-                        <Textarea value={base64Output} readOnly />
+                        <Textarea value={base64Output} isReadOnly />
                     </Card>
                 </div>
             </main>

@@ -141,7 +141,7 @@ export default function JsonPage() {
     <div className="min-h-screen bg-custom-dark text-white">
       <main className="p-6 max-w-6xl mx-auto">
         <Header title="JSON Tools" description="Powerful JSON visualization and formatting tools with multiple export options." icon={ShieldCheck} />
-        <Tabs tabs={tabs} onTabChange={setActiveTabAction} />
+        <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTabAction} />
 
         <div className="flex justify-between mt-4">
           <Button
@@ -229,7 +229,7 @@ export default function JsonPage() {
                     customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem" }}
                     className="p-6 font-mono text-sm whitespace-pre-wrap h-[200px] sm:h-[600px]"
                   >
-                    {activeTab === 1 ? convertedOutput : formattedJson}
+                    {activeTab === 1 ? String(convertedOutput || "") : String(formattedJson || "")}
                   </SyntaxHighlighter>
                 )}
               </div>
