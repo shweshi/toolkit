@@ -9,6 +9,7 @@ import Textarea from "@/components/ui/Textarea";
 import { ShieldCheck, Code, Braces, AlertTriangle, CheckCircle } from "lucide-react";
 import { v4 as uuidv4, validate as validateUUID } from "uuid";
 import Button from "../ui/Button";
+import Back from "../ui/Back";
 
 export default function UUIDGenerator() {
     const pathname = usePathname();
@@ -66,9 +67,10 @@ export default function UUIDGenerator() {
     return (
         <div className="min-h-screen bg-custom-dark text-white">
             <main className="p-6 max-w-6xl mx-auto">
+                <Back />
                 <Header title="UUID Generator & Validator" description="Generate and validate UUIDs instantly." icon={ShieldCheck} />
                 <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTabAction} />
-                <div className="flex justify-between mt-4">
+                <div className="flex justify-between mt-4 gap-2">
 
                     {
                         activeTab === 1 ? (

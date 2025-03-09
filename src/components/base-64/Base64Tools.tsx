@@ -7,6 +7,7 @@ import Tabs from "@/components/ui/Tabs";
 import Card from "@/components/ui/Card";
 import Textarea from "@/components/ui/Textarea";
 import { ShieldCheck, Code } from "lucide-react";
+import Back from "../ui/Back";
 
 export default function Base64Tool() {
     const pathname = usePathname(); // Get current route
@@ -71,6 +72,7 @@ export default function Base64Tool() {
     return (
         <div className="min-h-screen bg-custom-dark text-white">
             <main className="p-6 max-w-6xl mx-auto">
+                <Back />
                 <Header title="Base64 Encoder & Decoder" description="Convert text to Base64 and vice versa." icon={ShieldCheck} />
                 <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTabAction} />
 

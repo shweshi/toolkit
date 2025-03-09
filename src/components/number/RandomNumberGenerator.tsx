@@ -6,6 +6,7 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Braces, Code } from "lucide-react";
+import Back from "../ui/Back";
 
 export default function RandomNumberTool() {
     const [minValue, setMinValue] = useState("");
@@ -27,6 +28,7 @@ export default function RandomNumberTool() {
     return (
         <div className="min-h-screen bg-custom-dark text-white">
             <main className="p-6 max-w-6xl mx-auto">
+                <Back />
                 <Header
                     title="Random Number Generator"
                     description="Generate a random number between a min and max value."

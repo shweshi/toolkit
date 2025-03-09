@@ -14,6 +14,7 @@ import Textarea from "@/components/ui/Textarea";
 import { AlertTriangle, Braces, CheckCircle, Code, RefreshCcw, ShieldCheck } from "lucide-react";
 import { getSampleJson } from "@/utils/SampleJson";
 import { JSONTree } from "react-json-tree";
+import Back from "../ui/Back";
 
 export default function JsonPage() {
   const [jsonInput, setJsonInput] = useState("");
@@ -140,10 +141,11 @@ export default function JsonPage() {
   return (
     <div className="min-h-screen bg-custom-dark text-white">
       <main className="p-6 max-w-6xl mx-auto">
+        <Back />
         <Header title="JSON Tools" description="Powerful JSON visualization and formatting tools with multiple export options." icon={ShieldCheck} />
         <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTabAction} />
 
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 gap-2">
           <Button
             className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-gray-400 hover:text-white backdrop-blur-sm flex items-center gap-2"
             onClick={loadSampleJson}

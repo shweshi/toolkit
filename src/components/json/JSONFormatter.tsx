@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
 import { AlertTriangle, Braces, CheckCircle, Code } from "lucide-react";
 import { getSampleJson } from "@/utils/SampleJson";
+import Back from "../ui/Back";
 
 export default function JsonFormatter() {
   const [jsonInput, setJsonInput] = useState("");
@@ -48,8 +49,9 @@ export default function JsonFormatter() {
   return (
     <div className="min-h-screen bg-custom-dark text-white">
       <main className="p-6 max-w-6xl mx-auto">
+        <Back />
         <Header title="JSON Formatter" description="Format and beautify your JSON instantly." icon={Braces} />
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 gap-2">
           <Button
             className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-gray-400 hover:text-white backdrop-blur-sm flex items-center gap-2"
             onClick={loadSampleJson}

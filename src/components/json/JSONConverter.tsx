@@ -11,6 +11,7 @@ import { parse as json2csv } from "json2csv";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { getSampleJson } from "@/utils/SampleJson";
+import Back from "../ui/Back";
 
 export default function JsonConverter() {
   const [jsonInput, setJsonInput] = useState("");
@@ -76,6 +77,7 @@ export default function JsonConverter() {
   return (
     <div className="min-h-screen bg-custom-dark text-white">
       <main className="p-6 max-w-6xl mx-auto">
+        <Back />
         <Header title="JSON Converter" description="Convert JSON to CSV, XML, YAML instantly." icon={Code} />
         <div className="flex justify-between mt-4">
           <Button
