@@ -1,26 +1,83 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Set background color globally */
+body {
+  background-color: #121826;
+  color: white;
+  /* Ensures text is visible */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Optional: Apply to the main container */
+#root,
+#__next {
+  background-color: #121826;
+  min-height: 100vh;
+  /* Ensures full height */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+@media (min-width: 640px) {
+  .sm\:gap-4 {
+    gap: 1rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.pr-4 {
+  padding-right: 1rem;
+}
+
+.pl-12 {
+  padding-left: 3rem;
+}
+
+.py-3 {
+  padding-bottom: .75rem;
+  padding-top: .75rem;
+}
+
+.bg-blue-400 {
+  --tw-bg-opacity: 1;
+  background-color: #60a5fa;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 3rem;
+  line-height: 4rem;
+}
+
+@media (min-width: 640px) {
+  .sm\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:mb-6 {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:mb-12 {
+    margin-bottom: 3rem;
+  }
 }
