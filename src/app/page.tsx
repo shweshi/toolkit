@@ -59,8 +59,16 @@ export default function Home() {
       { title: "UUID Generator", description: "Generate unique UUIDs (v4) instantly for your applications.", href: "/uuid-generator", icon: "Fingerprint" },
       { title: "UUID Validator", description: "Check if a given string is a valid UUID.", href: "/uuid-validator", icon: "Barcode" },
       { title: "Random Number Generator", description: "Generate a random number between a specified min and max range.", href: "/random-number-generator", icon: "Shuffle" },
-      { title: "Word & Character Counter", description: "Count words, characters, sentences, and paragraphs in real-time.", href: "/character-counter", icon: "Text" }
-    ]
+      { title: "Word & Character Counter", description: "Count words, characters, sentences, and paragraphs in real-time.", href: "/character-counter", icon: "Text" },
+      { title: "Diff Checker", description: "Compare text, JSON, and code side by side.", href: "/diff-checker", icon: "FileText" },
+    ],
+
+    networkingTools: [
+      { title: "DNS Lookup", description: "Fetch DNS records like A, AAAA, CNAME, and more.", href: "/dns-lookup", icon: "Search" },
+      { title: "IP Address Lookup", description: "Find details about any IP address, including location and ISP.", href: "/ip-address-lookup", icon: "Globe" },
+      { title: "Domain IP Lookup", description: "Find details about any domain address, including IP, location and ISP.", href: "/domain-ip-lookup", icon: "Globe" },
+      { title: "What's My IP?", description: "Find your public IP address and location details.", href: "/what-is-my-ip", icon: "Globe" }
+    ],
   };
 
 
@@ -107,6 +115,11 @@ export default function Home() {
           <div className="mt-16">
             <Header title="Utility Tools" description="Generate UUIDs, count words, and generate random numbers." icon={Wrench} />
             <ToolGrid tools={categories.utilityTools} />
+          </div>
+
+          <div className="mt-16">
+            <Header title="Networking Tools" description="DNS Lookup." icon={Wrench} />
+            <ToolGrid tools={categories.networkingTools} />
           </div>
 
         </div>

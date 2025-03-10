@@ -1,6 +1,6 @@
 "use client";
 import ToolCard from "./ToolCard";
-import { Code, Text, Search, Braces, Wrench, ShieldCheck, Eye, Shuffle, Barcode, Fingerprint, QrCode, Link, Link2 } from "lucide-react";
+import { FileText, Globe, Code, Text, Search, Braces, Wrench, ShieldCheck, Eye, Shuffle, Barcode, Fingerprint, QrCode, Link, Link2 } from "lucide-react";
 
 const iconMap: Record<string, any> = {
     Braces,
@@ -13,7 +13,10 @@ const iconMap: Record<string, any> = {
     QrCode,
     Link,
     Link2,
-    Text
+    Text,
+    Search,
+    Globe,
+    FileText
 };
 
 // Tools List Data
