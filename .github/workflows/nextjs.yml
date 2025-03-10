@@ -63,7 +63,7 @@ jobs:
         run: npm install react-diff-viewer --legacy-peer-deps
 
       - name: Build Next.js Site
-        run: ${{ env.runner }} next build && next export
+        run: ${{ env.runner }} next build
 
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
