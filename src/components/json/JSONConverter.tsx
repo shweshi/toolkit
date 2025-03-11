@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "@/components/ui/Header";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
-import { Code, Braces, AlertTriangle, CheckCircle } from "lucide-react";
+import { Code, Braces, AlertTriangle, CheckCircle, Download, Copy, Trash2, UploadIcon } from "lucide-react";
 import yaml from "js-yaml";
 import { json2xml } from "xml-js";
 import { parse as json2csv } from "json2csv";
@@ -21,6 +21,7 @@ export default function JsonConverter() {
     isValid: false,
     message: "",
   });
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     convertJson();
@@ -74,6 +75,109 @@ export default function JsonConverter() {
     setConvertedOutput(sample);
   };
 
+  const handleCopy = () => {
+    if (convertedOutput) {
+      navigator.clipboard.writeText(convertedOutput).then(() => {
+        alert("JSON copied to clipboard!");
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    if (jsonInput) {
+      setJsonInput("");
+    }
+  };
+
+  const handleDownload = () => {
+    if (convertedOutput) {
+      let type = "json";
+      switch (selectedFormat) {
+        case "yaml":
+          type = "yaml";
+          break;
+        case "xml":
+          type = "xml";
+          break;
+        case "csv":
+          type = "csv";
+          break;
+        default:
+          type = "json";
+      }
+      const blob = new Blob([convertedOutput], { type: `application/${type}` });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `formatted.${type}`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Get the first file from the input
+
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    // This function will run when the file is successfully read
+    reader.onload = () => {
+      try {
+        const fileContent = reader.result as string;
+
+        // Try parsing the file content into JSON
+        const parsedJson = JSON.parse(fileContent);
+
+        // If successful, set the parsed JSON to jsonInput
+        setJsonInput(JSON.stringify(parsedJson, null, 2));
+        setConvertedOutput(JSON.stringify(parsedJson, null, 2)); // Update formatted JSON as well
+        setValidationResult({ isValid: true, message: "Valid JSON" });
+      } catch (error) {
+        // Handle parsing errors (invalid JSON)
+        setConvertedOutput(undefined);
+        setValidationResult({ isValid: false, message: "Invalid JSON file." });
+        alert("Error: The file is not a valid JSON.");
+      }
+    };
+
+    // This function will run if there's an error reading the file
+    reader.onerror = () => {
+      setConvertedOutput(undefined);
+      setValidationResult({ isValid: false, message: "Error reading the file." });
+      alert("Error: Could not read the file.");
+    };
+
+    // Read the file as a text
+    reader.readAsText(file);
+  };
+
+  const inputButtons = [
+    {
+      icon: <UploadIcon size={20} />,
+      onClick: () => fileInputRef.current?.click(),
+    },
+    {
+      icon: <Trash2 size={20} />,
+      onClick: handleDelete,
+    },
+  ];
+
+  const resultButtons = [
+    {
+      icon: <Copy size={20} />,
+      onClick: handleCopy,
+    },
+    {
+      icon: <Download size={20} />,
+      onClick: handleDownload,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-custom-dark text-white">
       <main className="p-6 max-w-6xl mx-auto">
@@ -106,7 +210,14 @@ export default function JsonConverter() {
           </select>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Card title="JSON Input">
+          <Card title="JSON Input" buttons={inputButtons}>
+            <input
+              type="file"
+              accept=".json" // Restrict file type to JSON
+              ref={fileInputRef} // Reference to trigger file input programmatically
+              onChange={handleUpload} // Handle file change (upload)
+              className="hidden" // Make the file input invisible
+            />
             <div className="h-[200px] sm:h-[600px] relative">
               <Textarea
                 value={jsonInput}
@@ -116,7 +227,7 @@ export default function JsonConverter() {
             </div>
           </Card>
 
-          <Card title={"Converted Output"}>
+          <Card title={"Converted Output"} buttons={resultButtons}>
             <div className="h-[200px] sm:h-[600px] relative">
               <div
                 className={`flex flex-col rounded-xl border h-[200px] sm:h-[600px] ${validationResult.isValid

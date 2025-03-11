@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "@/components/ui/Header";
 import Card from "@/components/ui/Card";
 import Textarea from "@/components/ui/Textarea";
 import { JSONTree } from "react-json-tree";
 import { getSampleJson } from "@/utils/SampleJson";
 import Button from "@/components/ui/Button";
-import { AlertTriangle, CheckCircle, Code, MonitorSpeakerIcon } from "lucide-react";
+import { AlertTriangle, CheckCircle, Code, Copy, Download, MonitorSpeakerIcon, Trash2, UploadIcon } from "lucide-react";
 import { Braces } from "lucide-react";
 import Back from "../ui/Back";
 
@@ -17,6 +17,7 @@ export default function JsonVisualizer() {
     isValid: false,
     message: "",
   });
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     visualizeJson();
@@ -42,6 +43,64 @@ export default function JsonVisualizer() {
     const sample = getSampleJson();
     setJsonInput(sample);
   };
+
+  const handleDelete = () => {
+    if (jsonInput) {
+      setJsonInput("");
+    }
+  };
+
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Get the first file from the input
+
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    // This function will run when the file is successfully read
+    reader.onload = () => {
+      try {
+        const fileContent = reader.result as string;
+
+        // Try parsing the file content into JSON
+        const parsedJson = JSON.parse(fileContent);
+
+        // If successful, set the parsed JSON to jsonInput
+        setJsonInput(JSON.stringify(parsedJson, null, 2));
+        setParsedJson(JSON.stringify(parsedJson, null, 2)); // Update formatted JSON as well
+        setValidationResult({ isValid: true, message: "Valid JSON" });
+      } catch (error) {
+        // Handle parsing errors (invalid JSON)
+        setParsedJson(undefined);
+        setValidationResult({ isValid: false, message: "Invalid JSON file." });
+        alert("Error: The file is not a valid JSON.");
+      }
+    };
+
+    // This function will run if there's an error reading the file
+    reader.onerror = () => {
+      setParsedJson(undefined);
+      setValidationResult({ isValid: false, message: "Error reading the file." });
+      alert("Error: Could not read the file.");
+    };
+
+    // Read the file as a text
+    reader.readAsText(file);
+  };
+
+  const inputButtons = [
+    {
+      icon: <UploadIcon size={20} />,
+      onClick: () => fileInputRef.current?.click(),
+    },
+    {
+      icon: <Trash2 size={20} />,
+      onClick: handleDelete,
+    },
+  ];
 
   const customTheme = {
     scheme: 'shashi',
@@ -82,7 +141,14 @@ export default function JsonVisualizer() {
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Card title="JSON Input">
+          <Card title="JSON Input" buttons={inputButtons}>
+            <input
+              type="file"
+              accept=".json" // Restrict file type to JSON
+              ref={fileInputRef} // Reference to trigger file input programmatically
+              onChange={handleUpload} // Handle file change (upload)
+              className="hidden" // Make the file input invisible
+            />
             <div className="h-[200px] sm:h-[600px] relative">
               <Textarea
                 value={jsonInput}
@@ -100,7 +166,7 @@ export default function JsonVisualizer() {
                   }`}
               >
                 {!validationResult.isValid && (
-                <div className="flex inline-block mt-2" ><AlertTriangle className="inline-block ml-2 mr-2" />{validationResult.message}</div>
+                  <div className="flex inline-block mt-2" ><AlertTriangle className="inline-block ml-2 mr-2" />{validationResult.message}</div>
                 )}
 
                 {parsedJson && (

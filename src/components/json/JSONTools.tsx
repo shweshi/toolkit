@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, SetStateAction, useRef } from "react";
 import yaml from "js-yaml";
 import { json2xml } from "xml-js";
 import { parse as json2csv } from "json2csv";
@@ -11,7 +11,7 @@ import Tabs from "@/components/ui/Tabs";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
-import { AlertTriangle, Braces, CheckCircle, Code, RefreshCcw, ShieldCheck } from "lucide-react";
+import { AlertTriangle, Braces, CheckCircle, Code, Copy, Download, RefreshCcw, ShieldCheck, Trash2, UploadIcon } from "lucide-react";
 import { getSampleJson } from "@/utils/SampleJson";
 import { JSONTree } from "react-json-tree";
 import Back from "../ui/Back";
@@ -27,6 +27,7 @@ export default function JsonPage() {
   });
   const [activeTab, setActiveTab] = useState(0);
   const [selectedFormat, setSelectedFormat] = useState("json");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Auto-format/convert on text input change
   useEffect(() => {
@@ -117,6 +118,111 @@ export default function JsonPage() {
     { label: "JSON Validator", icon: <ShieldCheck />, desc: "Result" }
   ];
 
+  const handleCopy = () => {
+    const data = activeTab === 1 ? String(convertedOutput || "") : String(formattedJson || "")
+    if (data) {
+      navigator.clipboard.writeText(data).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    if (jsonInput) {
+      setJsonInput("");
+    }
+  };
+
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Get the first file from the input
+
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    // This function will run when the file is successfully read
+    reader.onload = () => {
+      try {
+        const fileContent = reader.result as string;
+
+        // Try parsing the file content into JSON
+        const parsedJson = JSON.parse(fileContent);
+
+        // If successful, set the parsed JSON to jsonInput
+        setJsonInput(JSON.stringify(parsedJson, null, 2));
+        setFormattedJson(JSON.stringify(parsedJson, null, 2)); // Update formatted JSON as well
+        setValidationResult({ isValid: true, message: "Valid JSON" });
+      } catch (error) {
+        // Handle parsing errors (invalid JSON)
+        setFormattedJson(undefined);
+        setValidationResult({ isValid: false, message: "Invalid JSON file." });
+        alert("Error: The file is not a valid JSON.");
+      }
+    };
+
+    // This function will run if there's an error reading the file
+    reader.onerror = () => {
+      setFormattedJson(undefined);
+      setValidationResult({ isValid: false, message: "Error reading the file." });
+      alert("Error: Could not read the file.");
+    };
+
+    // Read the file as a text
+    reader.readAsText(file);
+  };
+
+  const handleDownload = () => {
+    const data = activeTab === 1 ? String(convertedOutput || "") : String(formattedJson || "")
+    if (data) {
+      let type = "json";
+      switch (selectedFormat) {
+        case "yaml":
+          type = "yaml";
+          break;
+        case "xml":
+          type = "xml";
+          break;
+        case "csv":
+          type = "csv";
+          break;
+        default:
+          type = "json";
+      }
+      const blob = new Blob([data], { type: `application/${type}` });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `formatted.${type}`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const inputButtons = [
+    {
+      icon: <UploadIcon size={20} />,
+      onClick: () => fileInputRef.current?.click(),
+    },
+    {
+      icon: <Trash2 size={20} />,
+      onClick: handleDelete,
+    },
+  ];
+
+  const resultButtons = [
+    {
+      icon: <Copy size={20} />,
+      onClick: handleCopy,
+    },
+    {
+      icon: <Download size={20} />,
+      onClick: handleDownload,
+    },
+  ];
+
   const customTheme = {
     scheme: 'shashi',
     author: 'Shashi Prakash Gautam (http://github.com/shweshi)',
@@ -185,7 +291,14 @@ export default function JsonPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Card title="JSON Input">
+          <Card title="JSON Input" buttons={inputButtons}>
+            <input
+              type="file"
+              accept=".json" // Restrict file type to JSON
+              ref={fileInputRef} // Reference to trigger file input programmatically
+              onChange={handleUpload} // Handle file change (upload)
+              className="hidden" // Make the file input invisible
+            />
             <div className="h-[200px] sm:h-[600px] relative">
               <Textarea
                 value={jsonInput}
@@ -195,7 +308,7 @@ export default function JsonPage() {
             </div>
           </Card>
 
-          <Card title={tabs[activeTab]?.desc || "Output"}>
+          <Card title={tabs[activeTab]?.desc || "Output"} buttons={resultButtons}>
 
             <div className="h-[200px] sm:h-[600px] relative">
               <div

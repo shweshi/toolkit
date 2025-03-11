@@ -26,7 +26,7 @@ interface ToolGridProps {
 
 export default function ToolGrid({ tools }: ToolGridProps) {
     return (
-        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
             {tools.map((tool) => (
                 <ToolCard key={tool.href} title={tool.title} description={tool.description} href={tool.href} icon={iconMap[tool.icon]} />
             ))}

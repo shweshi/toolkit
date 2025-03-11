@@ -9,8 +9,8 @@ import { Braces, Code } from "lucide-react";
 import Back from "../ui/Back";
 
 export default function RandomNumberTool() {
-    const [minValue, setMinValue] = useState("");
-    const [maxValue, setMaxValue] = useState("");
+    const [minValue, setMinValue] = useState("0");
+    const [maxValue, setMaxValue] = useState("10000000");
     const [randomNumber, setRandomNumber] = useState("");
 
     const generateRandomNumber = () => {
