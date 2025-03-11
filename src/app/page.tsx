@@ -1,7 +1,7 @@
 import Footer from "@/components/ui/Footer";
 import Header from "@/components/ui/Header";
 import ToolGrid from "@/components/ui/ToolGrid";
-import { Code, Search, Braces, Wrench, ShieldCheck } from "lucide-react";
+import { Code, Search, Braces, Wrench, ShieldCheck, Image } from "lucide-react";
 
 export const metadata = {
   title: "Online Developer Tools - JSON Formatter, JWT Decoder & More",
@@ -34,6 +34,10 @@ export const metadata = {
 export default function Home() {
   // Tools List Data
   const categories = {
+    imageTools: [
+      { title: "Circle Cropper", description: "Circle Crop your images effortlessly—upload, adjust, and download in PNG, JPG, or WEBP", href: "/circle-image-cropper", icon: "Crop" }
+    ],
+
     jsonTools: [
       { title: "JSON Tools", description: "A suite of powerful JSON visualization and formatting tools with multiple export options.", href: "/json-tools", icon: "Braces" },
       { title: "JSON Formatter", description: "Instantly beautify and format your JSON for better readability.", href: "/json-formatter", icon: "Braces" },
@@ -97,6 +101,11 @@ export default function Home() {
 
             </div>
           </div>
+          <div className="mt-8">
+            <Header title="Image Tools" description="Powerful JSON visualization and formatting tools." icon={Image} />
+            <ToolGrid tools={categories.imageTools} />
+          </div>
+
           <div className="mt-8">
             <Header title="JSON Tools" description="Powerful JSON visualization and formatting tools." icon={Braces} />
             <ToolGrid tools={categories.jsonTools} />
