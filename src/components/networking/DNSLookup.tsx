@@ -16,7 +16,7 @@ export default function DNSLookup() {
     const [dnsData, setDnsData] = useState<any>(null);
     const [validationResult, setValidationResult] = useState<{ isValid: boolean; message: string }>({
         isValid: false,
-        message: "Enter Domain.",
+        message: "Domain is required.",
     });
     const [selectedType, setSelectedType] = useState("A");
 
@@ -110,7 +110,7 @@ export default function DNSLookup() {
                     <SimpleCard title="DNS Records">
                         <div className="h-[200px] sm:h-[600px] relative">
                             <div
-                                className={`flex flex-col rounded-xl border h-full ${validationResult.isValid
+                                className={`flex flex-col rounded-xl border ${validationResult.isValid
                                     ? "bg-card-dark text-green-400 border-green-400/20"
                                     : "bg-card-dark text-red-400 border-red-400/20"
                                     }`}

@@ -63,7 +63,7 @@ export default function IPAddressLookup() {
                     {/* Output Display */}
                     <SimpleCard title="Lookup Result">
                         <div className="h-[200px] sm:h-[600px] relative">
-                            <div className={`flex flex-col rounded-xl border h-full ${error ? "bg-card-dark text-red-400 border-red-400/20" : "bg-card-dark text-green-400 border-green-400/20"}`}>
+                            <div className={`flex flex-col rounded-xl border ${error ? "bg-card-dark text-red-400 border-red-400/20" : "bg-card-dark text-green-400 border-green-400/20"}`}>
                                 {error && (
                                     <div className="p-4 flex items-center text-red-400">
                                         <AlertTriangle className="mr-2" /> {error}
@@ -72,7 +72,7 @@ export default function IPAddressLookup() {
                                 <SyntaxHighlighter
                                     language="json"
                                     style={atomDark}
-                                    customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem", height: "100%" }}
+                                    customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem" }}
                                     className="flex-1 p-6 font-mono text-sm whitespace-pre-wrap"
                                 >
                                     {ipData || ""}
