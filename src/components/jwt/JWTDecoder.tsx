@@ -118,7 +118,7 @@ export default function JWTDecoder() {
                         className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-gray-400 hover:text-white backdrop-blur-sm flex items-center gap-2"
                         onClick={loadSampleJWT}
                     >
-                        <Braces /> Load Sample JWT
+                        <Braces /> <span className="text-sm sm:text-base">Load Sample JWT</span>
                     </Button>
                     {
                         activeTab === 1 ? (
@@ -127,7 +127,7 @@ export default function JWTDecoder() {
                             </Button>
                         ) : (
                             <Button onClick={decodeJWT} className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all flex items-center gap-2">
-                                <Braces /> Decode JWT
+                                <Braces /> <span className="text-sm sm:text-base">Decode JWT</span>
                             </Button>
                         )
                     }

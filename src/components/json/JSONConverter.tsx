@@ -4,7 +4,17 @@ import Header from "@/components/ui/Header";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
-import { Code, Braces, AlertTriangle, CheckCircle, Download, Copy, Trash2, UploadIcon } from "lucide-react";
+import {
+  Code,
+  Braces,
+  AlertTriangle,
+  CheckCircle,
+  Download,
+  Copy,
+  Trash2,
+  UploadIcon,
+  Expand,
+} from "lucide-react";
 import yaml from "js-yaml";
 import { json2xml } from "xml-js";
 import { parse as json2csv } from "json2csv";
@@ -12,19 +22,30 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { getSampleJson } from "@/utils/SampleJson";
 import Back from "../ui/Back";
+import JsonFullScreen from "@/components/ui/JsonFullScreen";
 
 export default function JsonConverter() {
   const [jsonInput, setJsonInput] = useState("");
-  const [convertedOutput, setConvertedOutput] = useState<string | undefined>(undefined);
+  const [convertedOutput, setConvertedOutput] = useState<string | undefined>(
+    undefined
+  );
   const [selectedFormat, setSelectedFormat] = useState("json");
-  const [validationResult, setValidationResult] = useState<{ isValid: boolean; message: string }>({
+  const [validationResult, setValidationResult] = useState<{
+    isValid: boolean;
+    message: string;
+  }>({
     isValid: false,
     message: "",
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
-    convertJson();
+    if (jsonInput.trim().startsWith("http")) {
+      handleLoadFromUrl(jsonInput.trim());
+    } else {
+      convertJson();
+    }
   }, [jsonInput, selectedFormat]);
 
   const convertJson = () => {
@@ -43,7 +64,10 @@ export default function JsonConverter() {
           result = yaml.dump(parsedJson);
           break;
         case "xml":
-          result = json2xml(JSON.stringify(parsedJson), { compact: true, spaces: 2 });
+          result = json2xml(JSON.stringify(parsedJson), {
+            compact: true,
+            spaces: 2,
+          });
           break;
         case "csv":
           if (Array.isArray(parsedJson)) {
@@ -61,13 +85,15 @@ export default function JsonConverter() {
       }
 
       setConvertedOutput(result);
-      setValidationResult({ isValid: true, message: "Valid JSON (RFC 8259 Compliant)" });
+      setValidationResult({
+        isValid: true,
+        message: "Valid JSON (RFC 8259 Compliant)",
+      });
     } catch (e: any) {
       setConvertedOutput(undefined);
       setValidationResult({ isValid: false, message: e.message });
     }
   };
-
 
   const loadSampleJson = () => {
     const sample = getSampleJson();
@@ -148,12 +174,33 @@ export default function JsonConverter() {
     // This function will run if there's an error reading the file
     reader.onerror = () => {
       setConvertedOutput(undefined);
-      setValidationResult({ isValid: false, message: "Error reading the file." });
+      setValidationResult({
+        isValid: false,
+        message: "Error reading the file.",
+      });
       alert("Error: Could not read the file.");
     };
 
     // Read the file as a text
     reader.readAsText(file);
+  };
+
+  const handleLoadFromUrl = async (url: string) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch JSON.");
+      const jsonData = await response.json();
+      setJsonInput(JSON.stringify(jsonData, null, 2));
+      setConvertedOutput(JSON.stringify(jsonData, null, 2));
+      setValidationResult({ isValid: true, message: "Valid JSON from URL" });
+    } catch (error) {
+      setConvertedOutput(undefined);
+      setValidationResult({
+        isValid: false,
+        message: "Invalid JSON from URL.",
+      });
+      alert("Error: Could not fetch valid JSON from the URL.");
+    }
   };
 
   const inputButtons = [
@@ -176,19 +223,28 @@ export default function JsonConverter() {
       icon: <Download size={20} />,
       onClick: handleDownload,
     },
+    {
+      icon: <Expand size={20} />,
+      onClick: () => setIsFullScreen(true)
+    },
   ];
 
   return (
     <div className="min-h-screen bg-custom-dark text-white">
       <main className="p-6 max-w-6xl mx-auto">
         <Back />
-        <Header title="JSON Converter" description="Convert JSON to CSV, XML, YAML instantly." icon={Code} />
+        <Header
+          title="JSON Converter"
+          description="Convert JSON to CSV, XML, YAML instantly."
+          icon={Code}
+        />
         <div className="flex justify-between mt-4">
           <Button
             className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-gray-400 hover:text-white backdrop-blur-sm flex items-center gap-2"
             onClick={loadSampleJson}
           >
-            <Braces /> Load Sample JSON
+            <Braces />
+            <span className="text-sm sm:text-base">Load Sample JSON</span>
           </Button>
 
           <select
@@ -200,13 +256,21 @@ export default function JsonConverter() {
               backgroundRepeat: "no-repeat",
               backgroundPosition: "right 1rem center",
               backgroundSize: "1.5em",
-              paddingRight: "2.5rem"
+              paddingRight: "2.5rem",
             }}
           >
-            <option value="json" className="bg-[#0A0F1C] text-white">JSON</option>
-            <option value="yaml" className="bg-[#0A0F1C] text-white">YAML</option>
-            <option value="xml" className="bg-[#0A0F1C] text-white">XML</option>
-            <option value="csv" className="bg-[#0A0F1C] text-white">CSV</option>
+            <option value="json" className="bg-[#0A0F1C] text-white">
+              JSON
+            </option>
+            <option value="yaml" className="bg-[#0A0F1C] text-white">
+              YAML
+            </option>
+            <option value="xml" className="bg-[#0A0F1C] text-white">
+              XML
+            </option>
+            <option value="csv" className="bg-[#0A0F1C] text-white">
+              CSV
+            </option>
           </select>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -222,7 +286,7 @@ export default function JsonConverter() {
               <Textarea
                 value={jsonInput}
                 onChange={(e) => setJsonInput(e.target.value)}
-                placeholder="Paste your JSON here..."
+                placeholder="Paste your JSON or URL here..."
               />
             </div>
           </Card>
@@ -231,29 +295,35 @@ export default function JsonConverter() {
             <div className="h-[200px] sm:h-[600px] relative">
               <div
                 className={`flex flex-col rounded-xl border h-[200px] sm:h-[600px] ${validationResult.isValid
-                  ? "bg-card-dark text-green-400 border-green-400/20"
-                  : "bg-card-dark text-red-400 border-red-400/20"
+                    ? "bg-card-dark text-green-400 border-green-400/20"
+                    : "bg-card-dark text-red-400 border-red-400/20"
                   }`}
               >
                 {!validationResult.isValid && (
-                  <div className="flex inline-block mt-2" ><AlertTriangle className="inline-block ml-2 mr-2" />{validationResult.message}</div>
+                  <div className="flex inline-block mt-2">
+                    <AlertTriangle className="inline-block ml-2 mr-2" />
+                    {validationResult.message}
+                  </div>
                 )}
 
                 <SyntaxHighlighter
                   language="json"
                   style={atomDark}
-                  customStyle={{ backgroundColor: "#1e2431", borderRadius: "0.75rem", marginTop: "0rem" }}
+                  customStyle={{
+                    backgroundColor: "#1e2431",
+                    borderRadius: "0.75rem",
+                    marginTop: "0rem",
+                  }}
                   className="flex-1 p-6 font-mono text-sm whitespace-pre-wrap h-[200px] sm:h-[600px]"
                 >
                   {String(convertedOutput || "")}
                 </SyntaxHighlighter>
-
               </div>
-
             </div>
           </Card>
         </div>
       </main>
+      <JsonFullScreen json={convertedOutput || ""} isOpen={isFullScreen} onClose={() => setIsFullScreen(false)} />
     </div>
   );
 }

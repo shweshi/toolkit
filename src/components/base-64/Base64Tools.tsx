@@ -6,7 +6,7 @@ import Header from "@/components/ui/Header";
 import Tabs from "@/components/ui/Tabs";
 import Card from "@/components/ui/Card";
 import Textarea from "@/components/ui/Textarea";
-import { ShieldCheck, Code } from "lucide-react";
+import { ShieldCheck, Code, Trash2, Copy, Download } from "lucide-react";
 import Back from "../ui/Back";
 
 export default function Base64Tool() {
@@ -69,6 +69,50 @@ export default function Base64Tool() {
         { label: "Base64 Decoder", icon: <ShieldCheck />, desc: "Decoded Output" }
     ];
 
+    const handleCopy = () => {
+        if (base64Output) {
+            navigator.clipboard.writeText(base64Output).then(() => {
+                alert("Copied to clipboard!");
+            });
+        }
+    };
+
+    const handleDelete = () => {
+        if (textInput) {
+            setTextInput("");
+        }
+    };
+
+    const handleDownload = () => {
+        if (base64Output) {
+            const blob = new Blob([base64Output], { type: "application/text" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "base64Output.text";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    };
+
+    const inputButtons = [
+        {
+            icon: <Trash2 size={20} />,
+            onClick: handleDelete,
+        },
+    ];
+
+    const resultButtons = [
+        {
+            icon: <Copy size={20} />,
+            onClick: handleCopy,
+        },
+        {
+            icon: <Download size={20} />,
+            onClick: handleDownload,
+        }
+    ];
+
     return (
         <div className="min-h-screen bg-custom-dark text-white">
             <main className="p-6 max-w-6xl mx-auto">
@@ -77,14 +121,14 @@ export default function Base64Tool() {
                 <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTabAction} />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <Card title="Input">
+                    <Card title="Input" buttons={inputButtons}>
                         <Textarea
                             value={textInput}
                             onChange={(e) => setTextInput(e.target.value)}
                             placeholder={activeTab === 0 ? "Enter text to encode..." : "Enter Base64 to decode..."}
                         />
                     </Card>
-                    <Card title={tabs[activeTab]?.desc || "Output"}>
+                    <Card title={tabs[activeTab]?.desc || "Output"} buttons={resultButtons}>
                         <Textarea value={base64Output} isReadOnly />
                     </Card>
                 </div>

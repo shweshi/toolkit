@@ -74,14 +74,14 @@ export default function UUIDGenerator() {
 
                     {
                         activeTab === 1 ? (
-                            <><Button onClick={generateUUID} className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all flex items-center gap-2">
-                                <Braces /> Generate Sample UUID
+                            <><Button onClick={generateUUID} className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-gray-400 hover:text-white backdrop-blur-sm flex items-center gap-2">
+                                <Braces /> <span className="text-sm sm:text-base">Generate Sample UUID</span>
                             </Button><Button onClick={validateInput} className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all flex items-center gap-2">
-                                    <Braces /> Validate UUID
+                                    <Braces /> <span className="text-sm sm:text-base">Validate UUID</span>
                                 </Button></>
                         ) : (
                             <Button onClick={generateUUID} className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all flex items-center gap-2">
-                                <Braces /> Generate UUID
+                                <Braces /> <span className="text-sm sm:text-base">Generate UUID</span>
                             </Button>
                         )
                     }

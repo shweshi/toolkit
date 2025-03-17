@@ -11,10 +11,11 @@ import Tabs from "@/components/ui/Tabs";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
-import { AlertTriangle, Braces, CheckCircle, Code, Copy, Download, RefreshCcw, ShieldCheck, Trash2, UploadIcon } from "lucide-react";
+import { AlertTriangle, Braces, CheckCircle, Code, Copy, Download, Expand, RefreshCcw, ShieldCheck, Trash2, UploadIcon, X } from "lucide-react";
 import { getSampleJson } from "@/utils/SampleJson";
 import { JSONTree } from "react-json-tree";
 import Back from "../ui/Back";
+import JsonFullScreen from "@/components/ui/JsonFullScreen";
 
 export default function JsonPage() {
   const [jsonInput, setJsonInput] = useState("");
@@ -28,17 +29,22 @@ export default function JsonPage() {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedFormat, setSelectedFormat] = useState("json");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   // Auto-format/convert on text input change
   useEffect(() => {
-    if (activeTab === 0) {
-      formatJson();
-    } else if (activeTab === 1) {
-      convertJson();
-    } else if (activeTab === 2) {
-      formatJson();
-    } else if (activeTab === 3) {
-      formatJson();
+    if (activeTab === 1) {
+      if (jsonInput.trim().startsWith("http")) {
+        handleLoadFromUrl(jsonInput.trim());
+      } else {
+        convertJson();
+      }
+    } else {
+      if (jsonInput.trim().startsWith("http")) {
+        handleLoadFromUrl(jsonInput.trim());
+      } else {
+        formatJson();
+      }
     }
   }, [jsonInput, selectedFormat]);
 
@@ -201,6 +207,24 @@ export default function JsonPage() {
     }
   };
 
+  const handleLoadFromUrl = async (url: string) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch JSON.");
+      const jsonData = await response.json();
+      setJsonInput(JSON.stringify(jsonData, null, 2));
+      setParsedJson(JSON.stringify(jsonData, null, 2));
+      setValidationResult({ isValid: true, message: "Valid JSON from URL" });
+    } catch (error) {
+      setParsedJson(undefined);
+      setValidationResult({
+        isValid: false,
+        message: "Invalid JSON from URL.",
+      });
+      alert("Error: Could not fetch valid JSON from the URL.");
+    }
+  };
+
   const inputButtons = [
     {
       icon: <UploadIcon size={20} />,
@@ -220,6 +244,10 @@ export default function JsonPage() {
     {
       icon: <Download size={20} />,
       onClick: handleDownload,
+    },
+    {
+      icon: <Expand size={20} />,
+      onClick: () => setIsFullScreen(true)
     },
   ];
 
@@ -256,7 +284,7 @@ export default function JsonPage() {
             className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-gray-400 hover:text-white backdrop-blur-sm flex items-center gap-2"
             onClick={loadSampleJson}
           >
-            <Code /> Load Sample JSON
+            <Braces /> <span className="text-sm sm:text-base">Load Sample JSON</span>
           </Button>
 
           {activeTab === 1 && (
@@ -285,7 +313,7 @@ export default function JsonPage() {
               className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all flex items-center gap-2"
               onClick={formatJson}
             >
-              <Code /> {"Format JSON"}
+              <Code /><span className="text-sm sm:text-base">{"Format JSON"}</span>
             </Button>
           )}
         </div>
@@ -303,7 +331,7 @@ export default function JsonPage() {
               <Textarea
                 value={jsonInput}
                 onChange={(e) => setJsonInput(e.target.value)}
-                placeholder="Paste your JSON here..."
+                placeholder="Paste your JSON or URL here..."
               />
             </div>
           </Card>
@@ -353,6 +381,7 @@ export default function JsonPage() {
           </Card>
         </div>
       </main>
+      <JsonFullScreen json={activeTab === 1 ? String(convertedOutput || "") : String(formattedJson || "")} isOpen={isFullScreen} onClose={() => setIsFullScreen(false)} />
     </div>
   );
 }
