@@ -215,8 +215,7 @@ export default function Home() {
               <h1 className="text-3xl font-bold text-white mb-1">🛠️ Toolkit</h1>
               <p className="text-lg text-gray-400">
                 A collection of powerful online developer tools for JSON, JWT,
-                QR codes, Base64, UUIDs, and more. Fast, secure, and
-                privacy-friendly.
+                QR codes, Base64, UUIDs, and more.
               </p>
               <p className="text-lg text-gray-400">
                 Fast, secure, and privacy-friendly.
