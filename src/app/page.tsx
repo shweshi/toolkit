@@ -18,6 +18,13 @@ export default function Home() {
           href: "/circle-image-cropper",
           icon: "Crop",
         },
+        {
+          title: "Image Blur",
+          description:
+            "Blur selected parts of an image easily. Draw to blur, then download your result!",
+          href: "/image-blur",
+          icon: "Image",
+        },
       ],
     },
     {
