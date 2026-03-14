@@ -216,20 +216,20 @@ export default function Home() {
   return (
     <div>
       <main className="min-h-screen bg-custom-dark text-white pt-8 sm:py-20 p-4">
-        <div className="max-w-6xl mx-auto px-2 sm:px-4">
-          <div className="flex items-center gap-3 mb-4 sm:mb-6 mb-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6 mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-1">🛠️ Toolkit</h1>
-              <p className="text-lg text-gray-400">
+              <h1 className="text-3xl font-bold text-white mb-2 text-center ">🛠️ Toolkit 🛠️</h1>
+              <p className="text-sm text-gray-400 text-center">
                 A collection of powerful online developer tools for JSON, JWT,
                 QR codes, Base64, UUIDs, and more.
               </p>
-              <p className="text-lg text-gray-400">
+              <p className="text-sm text-gray-400 text-center">
                 Fast, secure, and privacy-friendly.
               </p>
             </div>
           </div>
-          <div className="max-w-2xl mx-auto mb-8 sm:mb-12">
+          <div className="max-w-6xl mx-auto mb-8 sm:mb-12">
             <div className="relative">
               <input
                 placeholder="Search tools..."
